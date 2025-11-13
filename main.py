@@ -1,13 +1,12 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from typing import Any, Dict
 
 from database import db, create_document
 from schemas import ContactMessage
 
-app = FastAPI(title="Relax by the Ocean API", version="1.0.0")
+app = FastAPI(title="Ocean Apartment Rental API", version="1.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,7 +18,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello from FastAPI Backend!"}
+    return {"message": "Welcome to the Ocean Apartment Rental API"}
 
 @app.get("/api/hello")
 def hello():
@@ -64,7 +63,7 @@ def test_database():
 
 @app.post("/contact")
 def submit_contact(payload: ContactMessage):
-    """Accept and persist contact messages from the website."""
+    """Accept and persist booking/availability inquiries from the website."""
     try:
         doc_id = create_document("contactmessage", payload)
         return {"status": "ok", "id": doc_id}

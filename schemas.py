@@ -13,6 +13,7 @@ Model name is converted to lowercase for the collection name:
 
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
+from datetime import date
 
 # Example schemas (replace with your own):
 
@@ -42,9 +43,13 @@ class Product(BaseModel):
 
 class ContactMessage(BaseModel):
     """
-    Contact messages submitted from the website.
+    Booking/availability inquiries submitted from the website.
     Collection name: "contactmessage"
     """
     name: str = Field(..., min_length=2, max_length=100)
     email: EmailStr
+    phone: Optional[str] = Field(None, max_length=30)
+    check_in: Optional[date] = Field(None, description="Desired check-in date")
+    check_out: Optional[date] = Field(None, description="Desired check-out date")
+    guests: Optional[int] = Field(None, ge=1, le=12, description="Number of guests")
     message: str = Field(..., min_length=5, max_length=2000)
